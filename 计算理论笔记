@@ -1,0 +1,621 @@
+# 计算理论基础
+
+### 传统图灵机
+
+TM有三个磁带
+
+- Working tape 控制带（内存，CPU）
+- Input tape 输入带（键盘鼠标）
+- Output tape 输出带（屏幕）
+
+一开始指针指向三个带的最左边，每一步，三个指针中的一个会向右移动一个，并进行一个操作，可以无限操作（结束或死循环）从初始的格局离散的转移到最终的格局
+
+问题：会停机吗？并输出一个正确的结果？
+
+- 确定的图灵机
+
+所有的后续状态由初始输入和算法（指令集合）决定
+
+注意这个机器的每一部分都是有限的，但它有一个潜在的无限长的纸带，因此这种机器只是一个理想的设备。图灵认为这样的一台机器就能模拟人类所能进行的任何计算过程。
+
+- 快速排序是随机的（概率图灵机）
+
+
+- 非确定图灵机
+
+概念性，定义问题集合，并不能确定的构造出来
+
+给定初始状态，每一步走一层，深度为n的二叉树，只需要n步搜索完，每一步搜索一层
+
+能保证解空间是指数的
+
+例、图的三着色问题，不能存在一条边两端颜色相同
+
+解空间：$3^n$
+
+非确定图灵机只需要n个时间就能判断是否能三着色
+
+- 概率图灵机
+
+**概率图灵机**是一个**非决定型图灵机**，在每个转折点根据某种概率分布随机选择某种可行的转变(transition)。
+
+所以，概率图灵机可以有随机的结果(与决定型图灵机不同)；给定一个输入和一个状态机，机器运作的时间长度会不同，或者甚至不会停止； 甚至，这机器可能在这一次操作下回传为接受，下一次相同的输入值却回传为拒绝。
+
+概率图灵机与非确定图灵机不同，非确定图灵机至少会接受一次计算过程	，而概率图灵机则未知。
+
+- 量子计算机
+
+可以把指数个解隐含的存储在量子里，能否提炼出最优解。目前只对特定的数学问题有解。NP完全问题无法找到多项式解法。
+
+### P = NP?
+
+P表示存在多项式时间内有解
+
+在计算复杂度理论中，**P** 是在复杂度类问题中可于决定性图灵机以多项式量级求解的决定性问题。
+
+NP表示解空间至多指数级别，但不确定能不能多项式时间内找出来，但给一个解能在多项式时间内验证解是否正确
+
+**非定常多项式**（英语：**Non-deterministic polynomial**，缩写：**NP**）时间复杂性类，或称**非确定性多项式**时间复杂性类，包含了可以在多项式时间内，对一个判定性算法问题的实例，一个给定的解是否正确的算法问题。此复杂度类别是一个可在多项式时间以非确定型图灵机决定答案的问题的集合。
+
+设置解比验证解难？
+
+- NP困难问题（NP-hard problems）
+
+  是指这样的一类问题，它们本身的复杂度是多少无所谓（但由后面的论述可知至少是NP），但是只要这个问题找到确定的多项式时间的解，那么我们可以证明出所有的NP问题都一定存在确定的多项式时间的解。（简单叙述一下就是，只要有一个NP困难问题找到P解，那么所有NP问题都是P问题）
+
+
+
+- NP完全问题（NP-complete problems）
+
+  如果一个问题既是NP困难问题又是NP问题，我们称之为NP完全问题。
+
+  NPC表示，只要其中一个NP问题找到多项式解法，那么一切NP问题都找到多项式解法
+
+可满足性问题，有n个01变量，m个子句(x1V!x2…)合取(…)(…)使得所有需求都满足，即值为1，解空间$2^n$
+
+2-SAT为P， 3-SAT为NP，可能从2-SAT向3-SAT转变的过程中，出现一种中间态既不属于P也不属于NP
+
+如果每个子句中变量≥3，则为NPC问题
+
+图同构，大数分解，动态规划（P）
+
+假设NP != P，存在问题NPI，既不属于NPC也不属于P
+
+- 概率图灵机
+
+在原来的基础上，有一个随机带
+
+online view（现场算） vs. offline view（提前算好）
+
+- The class BPP
+
+BPP(Bounded-Probability Polynomial-time) is the class of all languages L for which exists a PPT machine M, s.t.
+
+任意x: Pr[M(x) = Xl(x)] >= 2/3	P.S. Xl(x) = {1 x∈L 0 x∉L} 
+
+将伯努利实验做n次，得到p[0] p[1]的估计值
+
+### 定义和基本属性
+
+加密算法Enc输入一个秘钥$k \in K$和一个明文$m \in M$然后输出一个密文c
+
+加密算法可能是概率的，即Enc多次运行时输出不同的密文
+
+$c \leftarrow Enc_k(m)$表示明文m用密钥k加密得到c的概率过程，用C表示密文空间
+
+$c := Enc_k(m)$表示明文m用密钥k加密得到c的确定过程
+
+加密方案正确性：$Dec_k(Enc_k(m)) = m$
+
+Pr[K = k]表示Gen输出k的概率
+
+Pr[M = m]表示明文为m的概率
+
+Pr[C = c]表示密文为c的概率，C上的分布取决于K和M上的分布
+
+完善保密加密：C的概率分布独立于明文，即密文中不包含任何明文信息
+
+- 一次一密
+
+  $a\oplus b$表示按位异或，密钥根据均匀概率选择
+
+  但多次加密就会被敌手得到明文信息
+
+### One-Way Function and Hard-Core
+
+两个人之间的信息传输是**不安全的**
+
+需要**秘钥**，A用秘钥K将信息M处理得到C，将C给B，B解密
+
+K key 秘钥
+
+M plaintext 明文
+
+C cipheitext 密文
+
+- 正确性	$K(M) \to C \to Dec_k(C) = M$
+- 安全性     ==最重要==：要求没有秘钥的人无法分解密文
+- 效率         时间复杂度影响效应，电池
+
+$M \to C$ is easy, but $C \to M$ is very hard(impossible)
+
+Easy: **P**	存在多项式复杂性算法能得到解
+
+Hard: 没有考虑范围内的算法能得到解
+
+古典密码学：1976前，设计一个加密解密系统，安全性出于对设计者的尊重。随意化设计，算法好坏无法评定。根本原因是无法说明安全性。**所有多项式时间的算法都不可能由C算出M。**
+
+==安全的密码也可以由C得到M的长度==
+
+$|m| = n , m \in \{0,1\}^n, |c| = 3n$ 可以在$O(2^n)$复杂度内完成暴力枚举
+
+要求：有指数算法无多项式算法	$P \subsetneqq O(2^n) \in EXP$	不妨把$O(2^n)$看成NP
+
+密码学的假设：$P \ne NP$	$PPT \subsetneqq EXP$
+
+对于攻击者：破译成千上万的（明文，密文）消息对的一部分（10%概率）
+
+对于设计者：$C \to M$的概率非常非常低，最好是不得到任何信息
+
+有没有可能概率为0：==不可能==，因为即便乱猜，也有$\frac{1}{2^n}$概率猜到
+
+### Negligible Function
+
+==我们默认单项函数存在==
+
+A function $f: N \to R$ is negligible if for every polynomial $p(·)$ for all sufficiently large n's $f(n) < \frac{1}{p(n)}$
+
+e.g. $f_1(n) = 2^{-n}$	$lim f_1(n)·n^c = 0, \forall c>0$
+
+e.g. $f_2(n) = n^{logn}$
+
+单项函数：f(x) = y 给了y不好求x
+
+$f>0$	is negligble if
+
+$\forall p(n) \in P$
+
+- 不可忽略函数
+
+  $$\forall p \forall c \exists n>c, f(n) ≥ 1/p(n)$$
+
+### Strong OWF
+
+$$f: \{0,1\}^* \to \{0,1\}^*$$ is **strongly one-way** if
+
+- Easy to compute: there exists a deterministic polynomial-time algorithm A such that $A(x) = f(x)$
+- Hard to invert: For every PPT algorithm A’, every positive polynomial p(·) and all sufficiently large n’s:
+
+初始写法：$\forall A' \in PPT, \forall p(·) \in P, \exists N, \forall n = |x| > N, Pr[A'(f(x)) = x] < \frac{1}{p(n)}$
+
+标准写法：$Pr[A’(f(Un),1^n) \in f^{-1}(f(Un))] < \frac{1}{p(n)} \leq negl(n)$
+
+$Un$是一个随机变量，分布在$U(\{0,1\}^n)$上的均匀分布，表示不同的随机变量（长度为n的字符串）
+
+解释：$1^n$ 表示长度为n的解 $x \leftarrow \{0,1\}^*, y=f(x), A’(y,n,R) = x’, f(x’) = y$的概率
+
+R是随机数 $|R|=\{0,1\}^{p(n)}$，样本空间${x||R}=\{0,1\}^{n+p(n)}$，样本空间的随机性来自Un和A'
+
+等概率的难度，x取均匀分布，求逆的难度
+
+不可能是无限集合上取均匀分布
+
+只能在有限集合上取均匀分布，连缀起来，求极限情况
+
+因此它是数学上的单项函数定义，也是点态刻画
+
+写成函数族的形式$\{f_i: D_i \to R_i\}_{i \in \bar I }$ $\bar{I}$ 为 index 集合
+
+$f^{(i)}: \{0,1\}^I \to \{0,1\}^*$ 表达方式不同
+
+但是由于信息丢失，可能无法求解x，所以我们只要求出的值和y有**相同相**
+
+$f(x,y) = xy$	已知值为12，求出（2，6）（3，4）都行
+
+### Weak OWF
+
+$f: \{0,1\}^* \to \{0,1\}^*$ is **weak one-way** if
+
+- Easy to compute: there exists a deterministic polynomial-time algorithm A such that $A(x) = f(x)$
+- Slightly hard to invert: 
+
+**Strong OWF = Weak OWF**
+
+单项函数存在必要条件：$P \ne NP$	因此目前还没有单项函数
+
+e.g.  $f(x1,…,xn) =$ the binary encode of $|x| = n$	==不能作为单项函数==
+
+$|f(x)| = log_2(n+1)$
+
+对于一个$y = n$ 长度的字符串，无法在$O(2^n)$时间内写出x，xy长度相差太差，因为资源不够，不是能力不够
+
+所以$A’(f(Un),1^n)$象征性地标示了x的长度，虽然这一信息无用，但不会出现以上问题
+
+### Candidates for OWF	类似单项函数（假设）
+
+- Interger Factorization 大数分解
+
+Assuming the intractability of factoring and using the density of primes theorem, it follows that $f_{mult}(x,y)$ is at least weekl one-way
+
+$f_{mult}(x,y) = x \times y$ where $|x| = |y|$
+
+- DLP 离散对数
+
+这些问题最好的解答是亚指数级$O(2^\sqrt{n})$
+
+- RSA
+
+### Non-Uniformly Strong OWF
+
+$$f: \{0,1\}^* \to \{0,1\}^*$$ is **strongly one-way** if
+
+- Easy to compute: there exists a deterministic polynomial-time algorithm A such that $A(x) = f(x)$
+
+- Hard to invert: For every (even non-uniform) family of polynomial-size circuites $\{C_n\}_{n \in N}$ every positive polynomial $p(·)$ and all sufficiently large n's:
+
+  $Pr[C(f(Un),1^n) \in f^{-1}(f(Un))] < \frac{1}{p(n)}$
+
+ $\{C_n\}_{n \in N}$专门处理长度为n的字符串
+
+uniform图灵机无法完成，必须用non-uniform计算机完成
+
+图灵机完成的概率
+
+
+
+Idf 理论上存在
+
+I过滤不合适的并起来没有组成01星集合
+
+index取不到无限大
+
+### Collection of Functions
+
+A collection of functions consists of an infinite set of indices, denoted Ī, and a corresponding set of
+finite functions, denoted $\{f_i\}_{i∈\bar I}$. That is, for each i∈Ī, the domain of the function fi, denoted Di, is a finite set.
+
+### Trapdoor OW Permutations
+
+Let $I \in \{0,1\}*$, and $I_n =  I\cup \{0,1\}^n$. A collection of permulations with indices in I is a set {} s.t. each fi is 1-1 on di. Such a collection is called a trapdoor permutation if there exists four PPT algorithms I,D,F and F-1 s.t. the following five conditions hold:
+
+Di = Ri 且为置换	
+
+$f_i: D_i \to R_i$	is one-way pemutation if: $D_i = R_i, \forall i \in I , f_i$ induces a permutation over $D_i, \forall i \in I$
+
+==单项函数存在不一定存在单项置换==
+
+$f_i: D_i \to D_i$ is a trpdoor OWP if:
+
+1. … \in OWP
+2. $\exists I,D,F,G \in PPT$假设$G = F^{-1}$
+3. jiandan  nan
+4. $\exists G \in PPT $ such that $G(1^n,td) = x$ td相当于秘钥
+
+### RSA Trapdoor陷门
+
+OWF to OWP to trapdoor OWP to Doublu enhanced trapdoor OWP
+
+RSA属于trapdoor，只要能证明他是单项函数
+
+### Hard-Core Predicates
+
+Hard to find a pre-image of y under OWF f doesn't mean that it's infeasile to find some partial information about the pre-image of y
+
+A polynomial-time computable predicate b:  is called a hard-core of a function f if for each PPT algorithm A', every positive polynomial p(·) and all sufficiently large n's
+
+简单来讲hard-core就是没有捷径可以得到的明文数据（分解不出任意一点数据）
+
+$h:\{0,1\}^* \to \{0,1\}$ is a hard-core of f if $\forall A' \in PPT, Pr[A'(1^n,y=f(x)) = h(x) = b] = negl(n) + \frac{1}{2}$
+
+$B(1^n,y=f(x))$ $\alpha \in \{0,1\},P_1[B(1^n,y)=b] = \frac{1}{2}$ 最差的算法概率为1/2
+
+定义不代表存在，对函数确实存在hard-core
+
+$f(x1,x2,…,xn) = x2x3…xn$
+
+$h(x1,x2,…,xn) = x1 \in \{0,1\}$ h is a hard-core of f
+
+当f是一个单项函数，能否证明h一定存在
+
+$h:\{0,1\}^* \to \{0,1\}$ is universal one-way hard-core if $\forall f \in OWF$, h is a hard-fore of f
+
+**Lemma.**  the universal one-way hard-core does not exist
+
+**Proof by contradiction**
+
+Assume h is a ...
+
+Pick $f \in OWF, g(x)  \triangleq (f(x),h(x))$ h(x)为1bit 
+
+Chaim $g \in OWF,Given. y = f(x), h(x), Find: x$
+
+对h(x)试两次{0,1}，是不是f(x) = y
+
+==f的单向性难度不是因为缺少一个bit信息而造成的（常数个bit不够，可以穷举）==
+
+h不是g的hard-core，因为h在g中一步算出（含在信息里）
+
+### Candidates for Hard-core
+
+通过实验（而非证明）有可能是单项函数的hard-core
+
+Least最后位(奇偶)
+
+### Hard-Core Pred. for Any OWF
+
+**Goldreich-Levin Lemma**
+
+$g(x,r) \triangleq (f(x),r) ,|x| = |r|$ 那么g一定是偶数长，但不在(0,1)*上，补齐定义
+
+假如是奇数长，写成$g(x1…xn,r1…rn,rn+1) \triangleq (f(x1,…,xn),r1…rn,rn+1)$这一位丢掉
+
+$b(x,r) = \sum {xi * ri \mod 2 \in \{0,1\}}$
+
+证明b为g的hard-core
+
+**密码学的证明都是反证法**
+
+**Proof by contradiction**
+
+1.Hypothesis b is not a hard core of g
+
+if b is a hard-core of g
+
+$\forall A' \in PPT,\forall p(·) \in P, \exists N, \forall n > N ,Pr[A'(y,r) = b(x,r)] < \frac{1}{p(x)}$
+
+thus if b is not a hard-core of g，存在一个无限子集使不等式不成立
+
+$\exists A' \in PPT,\forall p(·) \in P,\exists infinite S' \subseteq IN ,Pr[A'(y,r) = b(x,r)] \ge \frac{1}{p(x)} + \frac{1}{2} = \xi x(n) + \frac{1}{2}\to f \notin OWF$
+
+$S' \subseteq IN = S'' \subseteq IN$ 那么取 $S' = S''$
+
+$\exists A \in PPT, \exists p''(·) \in P, \exists infinite S'' \subseteq IN$
+
+Construction of A''
+
+Assumption $n \in S'$ is fixed
+
+$\varepsilon (n) \triangleq \frac{1}{p'(n)}$
+
+1的个数至少是$\frac{1}{2} + \frac{\varepsilon}{2}$的行数至少有$\frac{\varepsilon}{2}$
+
+Z1,Z2参数有相关性不能直接0.9*0.9 = 0.81
+
+下界 [e1∩e2] >= 1 - pr[e1] - pr[e2] = 0.8
+
+$z1\oplus z2 = x \odot r + x \odot (r \oplus e1) = x \odot(r \oplus r \oplus e1) = x \odot e1 = x1$
+
+不能用切尔诺夫解
+
+切比雪夫解：不用相互独立，只要两两独立
+
+### PRG 伪随机函数
+
+要求伪随机序列与真正随机序列没有办法进行区分
+
+#### Computational Indistinguishability 计算不可区分性
+
+**Def**   A probability ensemble X is a family $X = \{X_n\}_{n \in N}$such that $X_n$ is a probability distribution on some finite domain.
+
+**Def**   Two probability ensembles $X = \{X_n\}_{n \in N},Y = \{Y_n\}_{n \in N}$ are called computationally indistinguishable if for any probabilistic polynomial-time algorithm D, for any positive polunomial p(·) and for all sufficiently large n's
+$$
+|Pr[D(X_n,1^n)=1]-Pr[D(Y_n,1^n)=1]|<\frac{1}{p(n)}
+$$
+**例题** 等价定义
+
+一个Game，随机取$x \in X_n, y \in Y_n,b \in \{0,1\}$ Set $c = x $ if b=0, else c = y
+
+$A(c,1^n) \to b'$ Output b' = b
+
+A猜对输出1，否则0  $|Pr[Game = 1] - \frac{1}{2}| < \frac{1}{p(n)}$
+
+全概率公式+条件概率
+
+把抛硬币输出得到b'，胡乱猜对概率为0.5。这就证明了，无论用什么方法猜，都不比这种随机更有效。
+
+#### Statistical Closeness 统计不可区分
+
+**Def**  The statistial difference between two distributions, X and Y is defined as
+$$
+\Delta(X,Y) = \frac{1}{2}\sum_\alpha|Pr[X=\alpha] - Pr[Y = \alpha]|
+$$
+Two probability ensembles are statistically close if for all polynomials p(·) and for all sufficiently large n $\Delta(X_n,Y_n) < \frac{1}{p(n)}$
+
+**Prop**  If two pobability emsembles are statistically close then they are computationally indistinguishable.
+
+**计算不可区分性质**
+
+- 传递性
+  $$
+  X_n \doteq Y_n, Y_n \doteq Z_n, Z_n \doteq X_n
+  $$
+
+- ==证明==  If Xn = Yn, then for any PPT A, A(Xn) = A(Yn)
+
+计算不可区分 不一定 统计不可区分
+
+seed为$2^n$，他在样本空间占得很少
+
+$\{0,1\}_n$熵为n，作用在一个确定的过程，熵只能减少，因此Pseudorandom Sequence 熵 ＜ n
+
+### PRG
+
+**Def** A PseudoRandom Generator is a deterministic polynomial-time algorithm G satisfying the following two conditions:
+
+- Expansion
+
+  There exists a function $ l: N \to N$ such that$l(n)>n$ for all n and $|G(s)|=l(|s|)$ for all s of length n 
+
+- Pseudorandomness
+
+  The following ensembles are computationally indistinguishable
+  $$
+  \{G(U_n)_{n\in N}\}  \doteq \{U_{l(n)}\}_{n\in N}
+  $$
+
+- Increasing the expansion factor
+
+  Let $s_0 = s$ 种子and 全部串长都等于种子长，执行长度l次
+
+  $n \to G'(s0) \to(s1,\sigma_1) \to G'(s1) \to (s2,\sigma_2)$ 取$\sigma_1, \sigma_2...$连成output
+
+  G'为定长伪随机生成器，构成的G为变长伪随机生成器
+
+#### Single bit expansion
+
+设f为单项置换，b为hard-core predicate for f
+
+设g(x) = (f(x),b(x)) 长度为n+1，则g是pseudo-random generator伪随机生成器
+
+==**Proof** 反证法==
+
+Un是均匀分布的，f(Un)也是均匀分布的 *f表示置换*
+
+Suppose f(Un) b(Un) is distinguishable from UnU1 = f(Un)U1 by a PPT algorithm A 可区分, then f(Un)b(Un) is distinguishable from $f(Un)\bar{b}(Un)$
+
+Define $X_1 = f(Un)b(Un), X_2 = f(Un)\bar{b}(Un)$ X要么是X1,要么是X2
+
+Define $X=X_b$ for a random bit $b\in\{0,1\}$ $X=f(U_n)U_1 = U_{n+1}$
+$$
+Pr[A(X)=1]=\frac{1}{2}Pr[A(X_1)=1]+\frac{1}{2}Pr[A(X_2)=1] \Rightarrow Pr[A(X_2)=1] = 2Pr[A(X)=1]-Pr[A(X_1)=1]\\
+|Pr[A(f(U_n)b(U_n))=1] - Pr[A(f(U_n)\bar{b}(U_n))=1]|
+= Pr[A(X_1)=1]-Pr[A(X_2)=1]\\
+=Pr[A(X_1)=1]-2Pr[A(X)=1]+Pr[A(X_1)=1]
+=2Pr[A(X_1)=1]-2Pr[A(X)=1] \\
+=2|Pr[A(f(U_n)b(U_n))=1] - Pr[A(U_{n+1}))=1]|\ge \frac{2}{p(n)}
+$$
+矛盾！不是计算可区分的
+
+![](4.PNG)
+
+![](5.PNG)
+
+![](6.PNG)
+
+#### The reduction
+
+Input $y=f(s)$ Output$b(s)$
+
+Choose $\sigma \in \{0,1\}$  
+
+- If $A(y||\sigma) = 1$ output $\sigma$
+- else output $\bar{\sigma}$
+
+### Pseudorandom Functions PRF
+
+**Def**  $l: N \to N$ An l-bit function ensemble is a sequence F of random variables such that the random variables Fn assumes values in the set of functions mapping l(n)-bit-long strings to l(n)-bit-strings. The uniform l-bit function ensemble, denoted H has Hn uniformly distibuted over the set of all functions mapping l(n)-bit-long strings to l(n)-bit-long strings.
+
+The number of functions from n-bit to n-bit is $2^{n2^n}$
+
+An l-bit function ensemble F is called pseudorandom if for every PPT oracle machine M, every polynomial p(·) and all sufficiently large n's
+
+Where H is the uniform l-bit function ensemble
+$$
+|Pr[M^{F_n}(1^n)=1]-Pr[M^{H_n}(1^n)=1]| < \frac{1}{p(n)}
+$$
+
+#### Direct applications of PRF
+
+PRF exists if and only if OWF exists
+
+
+
+## Security
+
+### Security Definition
+
+![](2.png)
+
+Semantic security and indistinguishability are equivalent in the eacesdropping setting.
+
+The adversarial indistinguishability experiment $PrivK_{A,\pi}^{EAV}$
+
+1. The adversary A is give input 1^n, and outputs a pair of messages m0,m1 of the same length.
+2. a random key k is generated by running Gen(1^n) and a random bit b {0,1} is chosen. Then siphertext c <- Enck(mb) is computed and given to A.
+3. A outputs a bit b'
+4. The output of the experiment is defined to be 1 if b'=b and 0 othrwise. If $PrivK_{A,\pi}^{EAV}=1$ we say that A succeeded.
+
+**Definition 1**
+
+A private-key encryption scheme $\pi = (Gen,Enc,Dec)$has indistinguishable encryption in the presence of an eacesdropper if for all ppt adversary A there exists a negligible function such that
+$$
+Pr[PrivK_{A,\pi}^{EAV}(n)=1] \le \frac{1}{2} + negl(n)
+$$
+Where the probability is taken over the random coins used by A, as well as the random coins in the experiment(key generation,random bit b, encryption process).
+
+A will succeed in guessing with at most negligibly better than a naive guess.
+
+**Definition 2**
+
+A private-key encryption scheme $\pi = (Gen,Enc,Dec)$has indistinguishable encryption in the presence of an eacesdropper if for all ppt adversary a there exists a negligible function such that
+$$
+|Pr[PrivK_{A,\pi}^{EAV}(n,0)=1] - Pr[PrivK_{A,\pi}^{EAV}(n,1)=1]| \le negl(n)
+$$
+Denote the output bit b" of A in $PrivK_{A,\pi}^{EAV}(n,b)=b$ by $out(PrivK_{A,\pi}^{EAV}(n,b))$
+
+Security under IND impolies that no single bit of a random chosen plaintext can be guessed with probability that is significantly better than 0.5
+
+**Claim 1**
+
+Let $\pi=(Gen,Enc,Dec)$ be a private-key encryption scheme that has IND encryption int he presence of an eavesdropper. Then for all PPT adversaries A and all i,there exists a negligible function neglected sunch that:
+$$
+|Pr[A(1^n,Enc_k(m))=m^i]|\le\frac{1}{2}+negl(n)
+$$
+m为固定长度
+
+where is chosen uniformly at random and the probability is taken over the random coins of A, choice of m and key k and in encryption process.
+
+**Proof**
+
+Constucting an adversary A'
+
+- On input 1^n, choose $m_0 \leftarrow I_0^n,m_1 \leftarrow I_1^n$ uniformly at random from the indicated sets. Output m0,m1.
+- Upon receicing a cipher text c, invoke A on input c. Output b'0 =0 if A outputs 0 and b'=1 if A outputs 1.
+
+**$I_b^n$ means all string s of length n whose ith bit is b(0 or 1)**
+$$
+Pr[PrivK_{A',\pi}^{eav}(n)=1]=Pr[A(Enc_k(m_b))=b]\\
+=\frac{1}{2}(A(Enc_k(m_0))=0 +A(Enc_k(m_0))=1) = Pr[A(Enc_k(m))=m^i]
+$$
+![](1.png)**Claim 2**
+
+Let be a private-key encryption scheme that has IND-eac security. Then for every PPT adversary A there exists PPT algorihm A' such that for every polynomial-time computable function f and every efficiently sampleable set S, there exists a negligible function negl such that
+$$
+|Pr[A(1^n,Enc_k(m))=f(m)]-Pr[A'(1^n)=f(m)]| \le negl(n)\\
+where m \in S \{0,1\}^n
+$$
+一个非常聪明的人通过密文猜出的东西和一个傻瓜随便猜的东西没有区别
+
+![](3.png)
+
+### Semantic Security
+
+**Definition 3**
+
+A private-key encryption scheme is semantically secure in the presence of an eacesdropper if for every Ppt algorithm a there exists PPT algorithm A' cuch that for every efficiently-sampleable distribution X=(X1,…)分布 and all polynomial-time computable functions f and h, there exists a negligible function negl sunch that
+$$
+|Pr[A(1^n,Enc_k(m),h(m))=f(m)] - Pr[A'(1^n,h(m))=f(m)]| \le negl(n), m\in X_n
+$$
+m明文，h(m)为一些先验已知信息（不只一句），可能看到好多明文，比如信的开头总是Dear，明文相应信息也告诉你，也不能猜出
+
+构造B能攻破
+
+### Pseudorandomness
+
+a pseudorandom string is a string that looks like uniformly distributed string as long as the entity that is looking runs in polynomial time.
+
+**Definition**
+
+A private-key encryption scheme (Gen, Enc, Dec) is semantically secure in the presence of an eavesdropper if for every PPT algorithm A there exists a PPT algorithm A’ such that for every efficiently-sampleable distribution X=(X1 , …)  and all polynomial-time computable functions f and h, there exists a negligible function negl such that
+$$
+|Pr[A(1^n , Enck(m), h(m))=f(m)]-Pr[A’(1^n , h(m))=f(m)]| ≤ negl(n)\\
+m ∈_R X_n
+$$
+任何一个概率多项式时间算法都无法分别一个串是伪随机生成器生成出的还是真的样本空间随意抽取的。
+
+单项函数 ↔ 伪随机生成器 ↔ 伪随机函数 存在性一致
+
+
+
+
+
