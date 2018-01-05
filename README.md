@@ -1,5 +1,5 @@
 # Final-Record
-My record  about finals during 2017Spring
+My record  about finals during 2017Spring&Fall
 
 ## 计算理论基础
 
@@ -31,7 +31,9 @@ My record  about finals during 2017Spring
 ## 软件体系结构
 解释器 和 策略 不用看 第六章 map reduce 不考
 - 填空（10）
+
 ————模式，可以避免对象显式相互调用
+
 ————模式，可以共享内存
 。。。
 - 简答（70）
